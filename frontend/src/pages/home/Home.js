@@ -2,15 +2,17 @@ import Feed from "../../components/feed/Feed"
 import Rightbar from "../../components/rightbar/Rightbar"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Topbar from "../../components/topbar/Topbar"
+import "./home.css"
+
 
 function Home() {
     return (
         <div> 
             <Topbar /> 
-            <div>
+            <div className="homecontainer">
         <Sidebar />
-        <Rightbar />
         <Feed />
+        <Rightbar />
         </div>
           </div>
     )
