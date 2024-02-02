@@ -56,7 +56,7 @@
 .postbottomleft{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+   
 }
 .likeicon{
     width: 24px;
