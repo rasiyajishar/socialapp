@@ -1,7 +1,12 @@
-import Home from "./pages/home/Home"
+
+
 
 function App() {
-  return <Home />
+  return (
+    <div>
+      helloo
+    </div>
+  );
 }
 
 export default App;
