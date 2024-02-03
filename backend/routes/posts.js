@@ -83,45 +83,59 @@ postsRouter.get ("/:id", async (req,res)=>{
 
 //get timeline posts
 
-// postsRouter.get("/timeline/all",async(req,res)=>{
+postsRouter.get("/timeline/:userId",async(req,res)=>{
     
-//     try {
-//         const currentUser = await User.findById(req.body.userId)
-//         const userPosts = await Post.find({userId:currentUser._id})
-//     const friendPosts = await Promise.all(
-//     currentUser.followings.map((friendId) =>{
-//       return  Post.find({userId:friendId});
-//     })
-//     );
-//     res.json(userPosts.concat(...friendPosts))
-//     } catch (error) {
-//         res.status(500).json(error)
-//     }
-// })
-
-
-postsRouter.get("/timeline/all", async (req, res) => {
     try {
-        const userId = req.body.userId; // Assuming user ID is sent in the request body
-
-        const currentUser = await User.findById(userId); // Make sure to await the promise
-        if (!currentUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        const userPosts = await Post.find({ userId: currentUser._id });
-        const friendPosts = await Promise.all(
-            currentUser.followings.map((friendId) => {
-                return Post.find({ userId: friendId });
-            })
-        );
-        const allPosts = userPosts.concat(...friendPosts);
-        res.json(allPosts);
+        const currentUser = await User.findById(req.params.userId)
+        const userPosts = await Post.find({userId:currentUser._id})
+    const friendPosts = await Promise.all(
+    currentUser.followings.map((friendId) =>{
+      return  Post.find({userId:friendId});
+    })
+    );
+    res.json(userPosts.concat(...friendPosts))
     } catch (error) {
-        console.error("Error fetching timeline posts:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json(error)
     }
-});
+})
+
+//get users all post
+postsRouter.get("/profile/:username",async(req,res)=>{
+    
+    try {
+        const user = await User.findOne({username:req.params.username})
+        const  posts = await Post.find({userId:user._id})
+    res.status(200).json(posts)
+    
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+
+
+// postsRouter.get("/timeline/all", async (req, res) => {
+//     try {
+//         const userId = req.body.userId; // Assuming user ID is sent in the request body
+
+//         const currentUser = await User.findById(userId); // Make sure to await the promise
+//         if (!currentUser) {
+//             return res.status(404).json({ message: "User not found" });
+//         }
+
+//         const userPosts = await Post.find({ userId: currentUser._id });
+//         const friendPosts = await Promise.all(
+//             currentUser.followings.map((friendId) => {
+//                 return Post.find({ userId: friendId });
+//             })
+//         );
+//         const allPosts = userPosts.concat(...friendPosts);
+//         res.json(allPosts);
+//     } catch (error) {
+//         console.error("Error fetching timeline posts:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
 
 module.exports=postsRouter;
