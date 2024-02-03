@@ -11,6 +11,7 @@ function Post({post}) {
   
 const likehandler=()=>{
   setLike(isliked ? like-1 : like+1)
+  setIsLiked(!isliked)
 }
 
 
