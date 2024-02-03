@@ -28,6 +28,7 @@ function Rightbar({ profile }) {
 
 
   const Profilerightbar = () => {
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     return (
       <>
         <h4 className="rightbartitle"> User Information</h4>
@@ -54,23 +55,23 @@ function Rightbar({ profile }) {
         <h4 className="rightbartitle">User friends</h4>
         <div className="rightbarfollowings">
           <div className="rightbarfollowing">
-            <img src="/assets/prson/profile5.png" alt="" className="rightbarfollowingimg" />
+            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
             <span rightbarfollowingname>joji</span>
           </div>
           <div className="rightbarfollowing">
-            <img src="/assets/prson/profile5.png" alt="" className="rightbarfollowingimg" />
+            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
             <span rightbarfollowingname>joji</span>
           </div>
           <div className="rightbarfollowing">
-            <img src="/assets/prson/profile5.png" alt="" className="rightbarfollowingimg" />
+            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
             <span rightbarfollowingname>joji</span>
           </div>
           <div className="rightbarfollowing">
-            <img src="/assets/prson/profile5.png" alt="" className="rightbarfollowingimg" />
+            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
             <span rightbarfollowingname>joji</span>
           </div>
           <div className="rightbarfollowing">
-            <img src="/assets/prson/profile5.png" alt="" className="rightbarfollowingimg" />
+            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
             <span rightbarfollowingname>joji</span>
           </div>
 
