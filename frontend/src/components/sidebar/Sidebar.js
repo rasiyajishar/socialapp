@@ -6,6 +6,10 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import EventIcon from '@mui/icons-material/Event';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import WorkIcon from '@mui/icons-material/Work';
+import {Users} from "../../dummydatas"
+import Closefriends from '../closefriends/Closefriends';
+
+
 
 function Sidebar() {
     return (
@@ -45,22 +49,11 @@ function Sidebar() {
                 <button className='sidebarbutton'>Show More</button>
                 <hr className='sidebarhr'/>
            <ul className='sidebarfriendlist'>
-<li className='sidebarfriend' >
-    <img className='sidebarfriendimg' src='/assets/prson/profile11.jpg' alt=''/>
-<span className='sidebarfriendname'>jane</span>
-</li>
-<li className='sidebarfriend' >
-    <img className='sidebarfriendimg' src='/assets/prson/profile11.jpg' alt=''/>
-<span className='sidebarfriendname'>jane</span>
-</li>
-<li className='sidebarfriend' >
-    <img className='sidebarfriendimg' src='/assets/prson/profile11.jpg' alt=''/>
-<span className='sidebarfriendname'>jane</span>
-</li>
-<li className='sidebarfriend' >
-    <img className='sidebarfriendimg' src='/assets/prson/profile11.jpg' alt=''/>
-<span className='sidebarfriendname'>jane</span>
-</li>
+
+{Users.map(u=>(
+    <Closefriends key={u.id} user={u}/>
+))}
+
 
 
            </ul>

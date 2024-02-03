@@ -1,5 +1,6 @@
 import "./rightbar.css"
-
+import Online from "../online/Online"
+import {Users} from "../../dummydatas"
 function Rightbar() {
     return (
         <div className="rightbar">
@@ -12,38 +13,13 @@ function Rightbar() {
             <img className="rightbarad" src="/assets/prson/addimage1.webp" alt=""/>
             <h4 className="rightbartitle">Online Friends</h4>
             <ul className="rightbarfriendlist">
-                <li className="rightbarfriend">
-                    <div className="rightbarimageprofilecontainer">
-                  <img  className="rightbarprofileimg" src="/assets/prson/profile5.png" alt=""/>
-                  <span className="rightbaronline"></span>
-
-                    </div>
-                    <span className="rightbarusername">jojo</span>
-                </li>
-                <li className="rightbarfriend">
-                    <div className="rightbarimageprofilecontainer">
-                  <img  className="rightbarprofileimg" src="/assets/prson/profile5.png" alt=""/>
-                  <span className="rightbaronline"></span>
-
-                    </div>
-                    <span className="rightbarusername">jojo</span>
-                </li>
-                <li className="rightbarfriend">
-                    <div className="rightbarimageprofilecontainer">
-                  <img  className="rightbarprofileimg" src="/assets/prson/profile5.png" alt=""/>
-                  <span className="rightbaronline"></span>
-
-                    </div>
-                    <span className="rightbarusername">jojo</span>
-                </li>
-                <li className="rightbarfriend">
-                    <div className="rightbarimageprofilecontainer">
-                  <img  className="rightbarprofileimg" src="/assets/prson/profile5.png" alt=""/>
-                  <span className="rightbaronline"></span>
-
-                    </div>
-                    <span className="rightbarusername">jojo</span>
-                </li>
+              {Users.map(u=>(
+                <Online key={u.id} user={u}/>
+              ))}
+                
+                
+               
+                
             </ul>
             </div> 
             

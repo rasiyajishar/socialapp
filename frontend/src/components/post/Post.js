@@ -10,7 +10,7 @@ function Post({post}) {
           <div className="postwrapper">
             <div className="posttop">
               <div className="posttopleft">
-             <img className="postprofileimg" src="/assets/prson/profile6.png" alt="" />
+             <img className="postprofileimg" src={Users.filter((u)=> u.id === post.userId)[0].profilePicture} alt="" />
              <span className="postusername">{Users.filter((u)=> u.id === post.userId)[0].username}</span>
              <span className="postdate">{post.date}</span>
               </div>
@@ -27,12 +27,12 @@ function Post({post}) {
               <div className="postbottomleft">
                 <img src="/assets/prson/like.png" alt=""className="likeicon"/>
                 <img src="/assets/prson/heart.png" alt=""className="likeicon"/>
-              <span className="postlikecounter">{post.like}</span>
+              <span className="postlikecounter">{post.like} people like it</span>
               
               
               </div>
               <div className="postbottomright">
-              <span className="postcommenttext">{post.comment}</span>
+              <span className="postcommenttext">{post.comment} comments</span>
               </div>
               
             </div>
