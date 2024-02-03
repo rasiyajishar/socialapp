@@ -1,7 +1,7 @@
 import "./rightbar.css"
 import Online from "../online/Online"
 import { Users } from "../../dummydatas"
-function Rightbar({ profile }) {
+function Rightbar({ user }) {
 
   const Homerightbar = () => {
     return (
@@ -36,17 +36,17 @@ function Rightbar({ profile }) {
           <div className="rightbarinfoitem">
 
             <span className="rightbarinfokey">City:</span>
-            <span className="rightbarinfovalue">New York</span>
+            <span className="rightbarinfovalue">{user.city}</span>
           </div>
           <div className="rightbarinfoitem">
 
             <span className="rightbarinfokey">From:</span>
-            <span className="rightbarinfovalue">Madrid</span>
+            <span className="rightbarinfovalue">{user.from}</span>
           </div>
           <div className="rightbarinfoitem">
 
             <span className="rightbarinfokey">Relationship:</span>
-            <span className="rightbarinfovalue">Single</span>
+            <span className="rightbarinfovalue">{user.relationship ===1 ? "single" :user.relationship ===1 ? "married" : "-" }</span>
           </div>
 
         </div>
@@ -87,7 +87,7 @@ function Rightbar({ profile }) {
   return (
     <div className="rightbar">
       <div className="rightbarwrapper">
-       {profile ? <Profilerightbar /> : <Homerightbar /> }
+       {user ? <Profilerightbar /> : <Homerightbar /> }
       </div>
 
     </div>

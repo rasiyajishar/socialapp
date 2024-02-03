@@ -3,8 +3,27 @@ import Feed from "../../components/feed/Feed"
 import Rightbar from "../../components/rightbar/Rightbar"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Topbar from "../../components/topbar/Topbar"
+import { useEffect, useState } from "react"
+import axios from "axios";
+import {useParams} from "react-router";
 function Profile() {
+
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+const[user,setUser]=useState({})
+const username =useParams().username;
+
+
+
+useEffect(() => {
+  const fetchUser = async () => {
+    const res = await axios.get(`/users?username=${username}`)
+    console.log(res)
+    setUser(res.data)
+  }
+
+  fetchUser();
+}, [username])
+
     return (
         <div> 
         <Topbar /> 
@@ -13,18 +32,18 @@ function Profile() {
     <div className="profileright">
    <div className="profilerighttop">
     <div className="profilecover">
-    <img src={`${PF}post/coverpost8.avif`} alt="" className="profilecoverimg"/>
-    <img src={`${PF}prson/profile6.png`} alt="" className="profileuserimg"/>
+    <img src={user.coverPicture || PF+"post/custom coverphoto2.jpeg"} alt="" className="profilecoverimg"/>
+    <img src={user.profilePicture || PF+"prson/profile5.png"} alt="" className="profileuserimg"/>
     </div>
     <div className="profileinfo">
 
-      <h4 className="profileinfoname">aalia</h4>  
-      <span className="profileinfodesc">hellooooooooooooooo</span>  
+      <h4 className="profileinfoname">{user.username}</h4>  
+      <span className="profileinfodesc">{user.desc}</span>  
     </div>
     </div>
    <div className="profilerightbottom">
-   <Feed />
-    <Rightbar profile/>
+   <Feed username={username}/>
+    <Rightbar user={user}/>
    </div>
    
    
