@@ -38,8 +38,14 @@
    align-items: center;
 }
 
+.profileinfoname{
+    font-size: 24px;
+}
 
 
+.profileinfodesc{
+    font-weight: 300;
+}
 .profilerightbottom{
     display: flex;
 }
