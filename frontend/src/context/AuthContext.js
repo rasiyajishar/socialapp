@@ -16,6 +16,8 @@ const INITIAL_STATE = {
         "__v": 0,
         "desc": "hi aaaaaaallllllllllllll"
     },
+
+    // user:null,
     isFetching: false,
     error: false
 };
