@@ -8,7 +8,8 @@ const morgan = require("morgan");
 const userRouter = require("./routes/users");
 const authRouter = require("./routes/auth")
 const postsRouter = require("./routes/posts")
-
+const multer = require("multer")
+const path = require("path")
 dotenv.config();
 
 // Connect to MongoDB
@@ -24,12 +25,34 @@ mongoose.connection.on("error", (error) => {
     console.error("Error connecting to MongoDB:", error);
 });
 
+
+app.use("/images",express.static(path.join(__dirname,"public/images")));
+
 // Middleware
 
 app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+
+
+
+const storage = multer.diskStorage({
+    destination:(req,file,cb)=>{
+     cb(null,"public/images")   
+    },
+    filename:(req,file,cb)=>{
+        cb(null,file.originalname)
+    },
+})
+const upload = multer({storage});
+app.post("/api/upload",upload.single("file"),(req,res)=>{
+    try {
+     return res.status(200).json("file uploaded suscessfully")  
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 // Routes
 app.use("/api/users", userRouter);
