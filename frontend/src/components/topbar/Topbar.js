@@ -4,8 +4,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChatIcon from '@mui/icons-material/Chat';
 import {Link} from "react-router-dom"
-
+import { useContext } from "react";
+import {AuthContext} from "../../context/AuthContext"
 function Topbar() {
+const {user}= useContext(AuthContext);
+console.log(user) 
+const PF=process.env.REACT_APP_PUBLIC_FOLDER;
+
     return (
      <div className="topbarcontainer">
 <div className="topbarleft">
@@ -39,7 +44,18 @@ function Topbar() {
         <span className="topbariconbadge">1</span>
         </div>
     </div>
-    <img src="/assets/prson/profile6.png" alt="" className="topbarimg"/>
+
+    <Link to={`/profile/${user.username}`}>
+    <img 
+    src={
+        user.profilePicture 
+        ? PF + user.profilePicture 
+        : PF + "prson/profile5.png"
+        } 
+        alt="" className="topbarimg"
+        
+        />
+        </Link>
 </div>
 
      </div>
