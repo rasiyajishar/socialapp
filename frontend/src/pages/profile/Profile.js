@@ -32,8 +32,17 @@ useEffect(() => {
     <div className="profileright">
    <div className="profilerighttop">
     <div className="profilecover">
-    <img src={user.coverPicture || PF+"post/custom coverphoto2.jpeg"} alt="" className="profilecoverimg"/>
-    <img src={user.profilePicture || PF+"prson/profile5.png"} alt="" className="profileuserimg"/>
+    <img src={
+      user.coverPicture
+       ? PF+user.coverPicture 
+       : PF+"post/custom coverphoto2.jpeg"
+       } 
+       alt="" className="profilecoverimg"/>
+    <img src={
+      user.profilePicture
+       ? PF+user.profilePicture 
+       : PF+"prson/profile5.png"
+       } alt="" className="profileuserimg"/>
     </div>
     <div className="profileinfo">
 

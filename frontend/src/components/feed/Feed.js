@@ -30,7 +30,7 @@ const{user} = useContext(AuthContext)
     <div className="feed">
       {/* <input type="text" onChange={e => seText(e.target.value)} /> */}
       <div className="feedwrapper">
-        <Share />
+        {username === user.username && <Share />}
         {posts.map(p=>(
             <Post key={p._id} post={p}/>
           ))}

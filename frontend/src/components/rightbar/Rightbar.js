@@ -1,7 +1,28 @@
 import "./rightbar.css"
 import Online from "../online/Online"
 import { Users } from "../../dummydatas"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+
+
 function Rightbar({ user }) {
+const  PF=process.env.REACT_APP_PUBLIC_FOLDER;
+const[friends,setFriends]=useState([])
+
+useEffect(  ()=>{
+const getfriends =async()=>{
+  try {
+    const friendlist = await axios.get("/users/friends/"+user._id);
+setFriends(friendlist.data)
+  } catch (error) {
+    console.log(error)
+  }
+};
+getfriends()
+},[user._id]);
+
+
 
   const Homerightbar = () => {
     return (
@@ -53,27 +74,18 @@ function Rightbar({ user }) {
 
 
         <h4 className="rightbartitle">User friends</h4>
+        
+        
         <div className="rightbarfollowings">
+          {friends.map((friend)=>(
+
+          <Link to={"/profile/"+friend.username} style={{textDecoration:"none"}}>
           <div className="rightbarfollowing">
-            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
-            <span rightbarfollowingname>joji</span>
+            <img src={friend.rofilePicture ? PF+friend.rofilePicture : PF+"prson/profile5.png"} alt="" className="rightbarfollowingimg" />
+            <span rightbarfollowingname>{friend.username}</span>
           </div>
-          <div className="rightbarfollowing">
-            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
-            <span rightbarfollowingname>joji</span>
-          </div>
-          <div className="rightbarfollowing">
-            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
-            <span rightbarfollowingname>joji</span>
-          </div>
-          <div className="rightbarfollowing">
-            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
-            <span rightbarfollowingname>joji</span>
-          </div>
-          <div className="rightbarfollowing">
-            <img src={`${PF}prson/profile5.png`} alt="" className="rightbarfollowingimg" />
-            <span rightbarfollowingname>joji</span>
-          </div>
+          </Link>
+          ))}
 
         </div>
 
