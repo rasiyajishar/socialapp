@@ -22,6 +22,22 @@ const newPost = {
    userId : user._id,
    desc:desc.current.value
 }
+
+
+if(file){
+    const data = new FormData();
+    const fileName = Date.now() + file.name;
+     data.append("file",file)
+    data.append("name",fileName)
+    newPost.img = fileName;
+console.log(newPost)
+    try {
+        await axios.post("/upload",newPost)
+        window.location.reload()
+    } catch (error) {
+        console.log(error)
+    }
+}
 try {
  await axios.post("/posts/",newPost)
 } catch (error) {
