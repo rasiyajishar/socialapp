@@ -1,28 +1,50 @@
 import "./rightbar.css"
 import Online from "../online/Online"
 import { Users } from "../../dummydatas"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
-
+import { AuthContext } from "../../context/AuthContext";
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 function Rightbar({ user }) {
-const  PF=process.env.REACT_APP_PUBLIC_FOLDER;
+  
 const[friends,setFriends]=useState([])
+const {user:currentUser,dispatch}=useContext(AuthContext);
+const[followed,setFollowed]=useState(currentUser.followings.includes(user?.id))
+
+
+
+
+
 
 useEffect(  ()=>{
 const getfriends =async()=>{
   try {
-    const friendlist = await axios.get("/users/friends/"+user._id);
+    const friendlist = await axios.get("/users/friends/"+ user._id);
 setFriends(friendlist.data)
   } catch (error) {
     console.log(error)
   }
 };
 getfriends()
-},[user._id]);
+},[user]);
 
-
+const handleClick = async ()=>{
+  try {
+    if(followed){
+      await axios.put("/users/"+user._id+"/unfollow",{userId:currentUser._id})
+    dispatch({type:"UNFOLLOW",payload:user._id})
+    
+    }else{
+      await axios.put("/users/"+user._id+"/follow",{userId:currentUser._id})
+      dispatch({type:"FOLLOW",payload:user._id})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+  setFollowed(!followed)
+}
 
   const Homerightbar = () => {
     return (
@@ -52,6 +74,14 @@ getfriends()
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     return (
       <>
+      {user.username !== currentUser.username && (
+        <button className="rightbarfollowbutton" onClick={handleClick}>
+          {followed ? "unfollow" :"follow"}
+          {followed ? <CloseIcon /> : <AddIcon />}
+
+
+        </button>
+      )}
         <h4 className="rightbartitle"> User Information</h4>
         <div className="rightbarinfo">
           <div className="rightbarinfoitem">

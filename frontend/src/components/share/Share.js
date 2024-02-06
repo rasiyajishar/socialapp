@@ -6,7 +6,7 @@ import PermMediaIcon from '@mui/icons-material/PermMedia';
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
-
+import CancelIcon from '@mui/icons-material/Cancel';
 function Share() {
 
 const {user}=useContext(AuthContext)
@@ -55,6 +55,14 @@ try {
                     <input placeholder={"whats in your mind "+ user.username + "?" } className="shareinput" ref={desc} />
                 </div>
                 <hr className="sharehr" />
+
+{file && (
+    <div className="shareimgcontainer">
+      <img className="shareimg" src={URL.createObjectURL(file)} alt=""/>  
+   <CancelIcon className="sharecancelimg"  onClick={()=>setFile(null)} />
+    </div>
+)}
+
                 <form className="sharebottom" onSubmit={submitHandler}>
 
                     <div className="shareoptions">
