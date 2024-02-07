@@ -50,7 +50,7 @@ function Sidebar() {
                 <hr className='sidebarhr'/>
            <ul className='sidebarfriendlist'>
 
-{Users.map(u=>(
+{Users.map((u)=>(
     <Closefriends key={u.id} user={u}/>
 ))}
 

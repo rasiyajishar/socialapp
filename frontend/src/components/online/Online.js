@@ -5,7 +5,7 @@ function Online({user}) {
     return (
         <li className="rightbarfriend">
                     <div className="rightbarimageprofilecontainer">
-                  <img  className="rightbarprofileimg" src={PF+user.profilePicture} alt=""/>
+                  <img  className="rightbarprofileimg" src={PF+user.profilePicture} alt="" />
                   <span className="rightbaronline"></span>
 
                     </div>

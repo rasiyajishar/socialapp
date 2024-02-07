@@ -2,6 +2,8 @@ import { useContext, useRef } from "react"
 import "./login.css"
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext"
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -10,15 +12,22 @@ function Login() {
     const password = useRef()
     const { user, isFetching, error, dispatch } = useContext(AuthContext)
 
+    const navigate = useNavigate();
 
+    
 
     const handleClick = (e) => {
         e.preventDefault();
-
-        
-        loginCall({ email:email.current.value,password:password.current.value}, dispatch)
-    }
+        loginCall(
+          { email: email.current.value, password: password.current.value },
+          dispatch
+        );
+      };
     console.log(user)
+    const handlenewaccount=()=>{
+        navigate("/register")
+    }
+
     return (
         <div className="login">
             <div className="loginwrapper">
@@ -34,7 +43,7 @@ function Login() {
                         <input placeholder="Password" type="password" required minLength="6" className="logininput" ref={password} />
                         <button className="loginbutton">{isFetching ? "loading" : "Log In"}</button>
                         <span className="loginForgot">Forgot Password</span>
-                        <button className="loginregisterbutton">Create a new Account</button>
+                        <button className="loginregisterbutton" onClick={handlenewaccount}>Create a new Account</button>
 
                     </form>
                 </div>

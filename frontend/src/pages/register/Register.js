@@ -7,13 +7,13 @@ function Register() {
     const username = useRef();
     const email = useRef();
     const password = useRef();
-    const passwordagain = useRef();
+    const passwordAgain = useRef();
     const navigate = useNavigate();
 
     const handleClick = async (e) => {
         e.preventDefault();
-        if (passwordagain.current.value !== password.current.value) {
-            password.current.setCustomValidity("Passwords don't match");
+        if (passwordAgain.current.value !== password.current.value) {
+            passwordAgain.current.setCustomValidity("Passwords don't match");
         } else {
             const user = {
                 username: username.current.value,
@@ -21,14 +21,20 @@ function Register() {
                 password: password.current.value,
             };
             try {
-                await axios.post("/auth/register", user);
-                
+                // await axios.post("/api/auth/register", user);
+                await axios.post("http://localhost:8800/api/auth/register", user);
+
                 navigate('/login');
             } catch(err) {
                 console.log(err);
             }
         }
     }
+
+const handleLoginClick=()=>{
+    navigate("/login")
+}
+
 
     return (
         <div className="login">
@@ -42,9 +48,9 @@ function Register() {
                         <input placeholder="Username" required ref={username} className="logininput" name="username" />
                         <input placeholder="Email" required ref={email} className="logininput" type="email" name="email" />
                         <input placeholder="Password" required ref={password} minLength="6" className="logininput" type="password" name="password" />
-                        <input placeholder="Password Again" required ref={passwordagain} className="logininput" type="password" name="passwordAgain" />
+                        <input placeholder="Password Again" required ref={passwordAgain} className="logininput" type="password" name="passwordAgain" />
                         <button className="loginbutton" type="submit">Sign up</button>
-                        <button className="loginregisterbutton">Log into Account</button>
+                        <button className="loginregisterbutton" onClick={handleLoginClick}>Log into Account</button>
                     </form>
                 </div>
             </div>

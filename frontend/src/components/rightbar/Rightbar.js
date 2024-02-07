@@ -8,11 +8,14 @@ import { AuthContext } from "../../context/AuthContext";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 function Rightbar({ user }) {
-  
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 const[friends,setFriends]=useState([])
 const {user:currentUser,dispatch}=useContext(AuthContext);
-const[followed,setFollowed]=useState(currentUser.followings.includes(user?.id))
+// const [followed, setFollowed] = useState(currentUser.followings && currentUser.followings.includes(user?.id));
 
+const [followed, setFollowed] = useState(
+  currentUser.followings.includes(user?.id)
+);
 
 
 
@@ -21,7 +24,7 @@ const[followed,setFollowed]=useState(currentUser.followings.includes(user?.id))
 useEffect(  ()=>{
 const getfriends =async()=>{
   try {
-    const friendlist = await axios.get("/users/friends/"+ user._id);
+    const friendlist = await axios.get("/api/users/friends/"+ user._id);
 setFriends(friendlist.data)
   } catch (error) {
     console.log(error)
@@ -33,12 +36,12 @@ getfriends()
 const handleClick = async ()=>{
   try {
     if(followed){
-      await axios.put("/users/"+user._id+"/unfollow",{userId:currentUser._id})
+      await axios.put(`/api/users/${user._id}/unfollow`,{userId:currentUser._id,});
     dispatch({type:"UNFOLLOW",payload:user._id})
     
     }else{
-      await axios.put("/users/"+user._id+"/follow",{userId:currentUser._id})
-      dispatch({type:"FOLLOW",payload:user._id})
+      await axios.put(`/api/users/${user._id}/follow`,{userId:currentUser._id});
+      dispatch({type:"FOLLOW",payload:user._id});
     }
   } catch (error) {
     console.log(error)
@@ -57,7 +60,7 @@ const handleClick = async ()=>{
         <img className="rightbarad" src="/assets/prson/addimage1.webp" alt="" />
         <h4 className="rightbartitle">Online Friends</h4>
         <ul className="rightbarfriendlist">
-          {Users.map(u => (
+          {Users.map((u) => (
             <Online key={u.id} user={u} />
           ))}
 
@@ -66,7 +69,7 @@ const handleClick = async ()=>{
 
         </ul>
       </>
-    )
+    );
   };
 
 
@@ -111,7 +114,7 @@ const handleClick = async ()=>{
 
           <Link to={"/profile/"+friend.username} style={{textDecoration:"none"}}>
           <div className="rightbarfollowing">
-            <img src={friend.rofilePicture ? PF+friend.rofilePicture : PF+"prson/profile5.png"} alt="" className="rightbarfollowingimg" />
+            <img src={friend.profilePicture ? PF+friend.profilePicture : PF+"prson/profile5.png"} alt="" className="rightbarfollowingimg" />
             <span rightbarfollowingname>{friend.username}</span>
           </div>
           </Link>
@@ -137,3 +140,86 @@ const handleClick = async ()=>{
 }
 
 export default Rightbar
+
+// import "./rightbar.css";
+// import { useContext, useEffect, useState } from "react";
+// import axios from "axios";
+// import { Link } from "react-router-dom";
+// import { AuthContext } from "../../context/AuthContext";
+// import AddIcon from '@mui/icons-material/Add';
+// import CloseIcon from '@mui/icons-material/Close';
+
+// function Rightbar({ user }) {
+//   const [friends, setFriends] = useState([]);
+//   const { user: currentUser, dispatch } = useContext(AuthContext);
+//   const [followed, setFollowed] = useState(false);
+
+//   useEffect(() => {
+//     const getFriends = async () => {
+//       try {
+//         const friendlist = await axios.get(`/api/users/friends/${user?._id}`);
+//         setFriends(friendlist.data);
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     };
+
+//     if (user) {
+//       getFriends();
+//       setFollowed(currentUser.followings && currentUser.followings.includes(user._id));
+//     }
+//   }, [user, currentUser.followings]);
+
+//   const handleClick = async () => {
+//     try {
+//       if (followed) {
+//         await axios.put(`/api/users/${user._id}/unfollow`, { userId: currentUser._id });
+//         dispatch({ type: "UNFOLLOW", payload: user._id });
+//       } else {
+//         await axios.put(`/api/users/${user._id}/follow`, { userId: currentUser._id });
+//         dispatch({ type: "FOLLOW", payload: user._id });
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//     setFollowed(!followed);
+//   };
+
+//   return (
+//     <div className="rightbar">
+//       <div className="rightbarwrapper">
+//         {user ? (
+//           <>
+//             {user.username !== currentUser.username && (
+//               <button className="rightbarfollowbutton" onClick={handleClick}>
+//                 {followed ? "Unfollow" : "Follow"}
+//                 {followed ? <CloseIcon /> : <AddIcon />}
+//               </button>
+//             )}
+//             <h4 className="rightbartitle">User Information</h4>
+//             <div className="rightbarinfo">
+//               {/* User information details */}
+//             </div>
+//             <h4 className="rightbartitle">User Friends</h4>
+//             <div className="rightbarfollowings">
+//               {/* User friends list */}
+//             </div>
+//           </>
+//         ) : (
+//           <>
+//             <div className="birthdaycontainer">
+//               {/* Birthday container */}
+//             </div>
+//             <img className="rightbarad" src="/assets/prson/addimage1.webp" alt="" />
+//             <h4 className="rightbartitle">Online Friends</h4>
+//             <ul className="rightbarfriendlist">
+//               {/* Online friends list */}
+//             </ul>
+//           </>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Rightbar;

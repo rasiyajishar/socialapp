@@ -16,35 +16,46 @@ const[file,setFile] = useState(null)
 
 
 
-const submitHandler =async (e) =>{
-e.preventDefault();
-const newPost = {
-   userId : user._id,
-   desc:desc.current.value
-}
+ const submitHandler = async (e) => {
+    e.preventDefault();
+//     if (!user || !user._id) {
+//         console.error("User or user ID is undefined");
+//         return;
+//     }
 
+   const newPost = {
+      userId: user._id,
+        desc: desc.current.value,
+     };
 
-if(file){
-    const data = new FormData();
-    const fileName = Date.now() + file.name;
-     data.append("file",file)
-    data.append("name",fileName)
+     if (file) {
+        const data = new FormData();
+      const fileName = Date.now() + file.name;
+      
+        data.append("name", fileName);
+        data.append("file", file);
     newPost.img = fileName;
-console.log(newPost)
-    try {
-        await axios.post("/upload",newPost)
-        window.location.reload()
-    } catch (error) {
-        console.log(error)
-    }
-}
-try {
- await axios.post("/posts/",newPost)
-} catch (error) {
-    
-}
-}
+    console.log(newPost);
 
+         try {
+           await axios.post("/upload", data);
+      
+       } catch (error) {
+           console.error("Error uploading file:", error);
+        }
+    }
+
+ try {
+        await axios.post("/posts/", newPost);
+window.location.reload();
+    } catch (error) {
+        console.error("Error creating new post:", error);
+    }
+};
+
+
+
+   
 
 
     return (

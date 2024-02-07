@@ -23,16 +23,16 @@ const {user:currentUser}=useContext(AuthContext)
 
 useEffect(()=>{
   setIsLiked(post.likes.includes(currentUser._id))
-},[currentUser._id,post.likes])
+},[currentUser._id, post.likes])
 
 
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`)
-      console.log(res)
+      const res = await axios.get(`/api/users?userId=${post.userId}`)
+      
       setUser(res.data)
-    }
+    };
 
     fetchUser();
   }, [post.userId])
@@ -41,7 +41,7 @@ useEffect(()=>{
   const likehandler = () => {
 try{
 
-  axios.put("/posts/"+post._id+"/like",{userId:currentUser._id})
+  axios.put("/api/posts/"+ post._id + "/like",{userId:currentUser._id});
 }
   catch(err){
 
@@ -51,7 +51,7 @@ try{
 
     setLike(isliked ? like - 1 : like + 1)
     setIsLiked(!isliked)
-  }
+  };
 
 
   return (
@@ -59,7 +59,7 @@ try{
       <div className="postwrapper">
         <div className="posttop">
           <div className="posttopleft">
-            <Link to={`profile/${user.username}`}>
+            <Link to={`/profile/${user.username}`}>
             <img className="postprofileimg" src={user.profilePicture ? PF + user.profilePicture : PF+"prson/profile5.png"} alt="" />
             
             </Link>
