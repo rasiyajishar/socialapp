@@ -29,7 +29,7 @@ useEffect(()=>{
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/api/users?userId=${post.userId}`)
+      const res = await axios.get(`http://localhost:8800/api/users?userId=${post.userId}`)
       
       setUser(res.data)
     };
@@ -41,7 +41,7 @@ useEffect(()=>{
   const likehandler = () => {
 try{
 
-  axios.put("/api/posts/"+ post._id + "/like",{userId:currentUser._id});
+  axios.put("http://localhost:8800/api/posts/"+ post._id + "/like",{userId:currentUser._id});
 }
   catch(err){
 

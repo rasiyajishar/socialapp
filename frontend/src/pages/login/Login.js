@@ -22,8 +22,11 @@ function Login() {
           { email: email.current.value, password: password.current.value },
           dispatch
         );
+         navigate("/home")
       };
     console.log(user)
+
+    
     const handlenewaccount=()=>{
         navigate("/register")
     }
