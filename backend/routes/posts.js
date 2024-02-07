@@ -2,6 +2,8 @@ const postsRouter = require("express").Router();
 
 const Post = require("../models/Post")
 const User =require("../models/User")
+
+
 //create a post
 postsRouter.post("/", async(req,res)=>{
 const newPost = new Post(req.body)
