@@ -27,7 +27,7 @@ const { username } = useParams();
 useEffect(() => {
   const fetchUser = async () => {
     try {
-      const res = await axios.get(`/api/users/${username}`);
+      const res = await axios.get(`http://localhost:8800/api/users/${username}`);
       setUser(res.data);
     } catch (error) {
       console.error("Error fetching user:", error);

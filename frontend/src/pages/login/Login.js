@@ -30,6 +30,8 @@ function Login() {
     const handlenewaccount=()=>{
         navigate("/register")
     }
+    
+
 
     return (
         <div className="login">
@@ -47,7 +49,7 @@ function Login() {
                         <button className="loginbutton">{isFetching ? "loading" : "Log In"}</button>
                         <span className="loginForgot">Forgot Password</span>
                         <button className="loginregisterbutton" onClick={handlenewaccount}>Create a new Account</button>
-
+                       
                     </form>
                 </div>
 

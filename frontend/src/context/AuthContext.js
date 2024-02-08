@@ -101,6 +101,15 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
   
+
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("user");
+    
+  };
+
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -108,6 +117,7 @@ export const AuthContextProvider = ({ children }) => {
         isFetching: state.isFetching,
         error: state.error,
         dispatch,
+        logout,
       }}
     >
       {children}

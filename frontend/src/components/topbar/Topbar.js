@@ -3,14 +3,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChatIcon from '@mui/icons-material/Chat';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 function Topbar() {
-    const { user } = useContext(AuthContext);
+    const { user ,logout} = useContext(AuthContext);
     console.log(user);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+   const navigate=useNavigate()
+   
+    const handleLogout = () => {
+        logout(); // Call the logout function from AuthContext
+   navigate("/login")
+    };
+
+
 
     return (
         <div className="topbarcontainer">
@@ -49,7 +57,7 @@ function Topbar() {
                             <span className="topbariconbadge">1</span>
                         </div>
                     </div>
-
+                    <button onClick={handleLogout}>Logout</button>
                     <Link to={`/profile/${user.username}`}>
                         <img
                             src={user.profilePicture ? PF + user.profilePicture : PF + "prson/profile5.png"}
