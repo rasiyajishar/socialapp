@@ -13,9 +13,7 @@
 // const {user:currentUser,dispatch}=useContext(AuthContext);
 // const [followed, setFollowed] = useState(currentUser.followings && currentUser.followings.includes(user?.id));
 
-// // const [followed, setFollowed] = useState(
-// //   currentUser.followings.includes(user?.id)
-// // );
+ 
 
 
 
@@ -25,7 +23,7 @@
 //   if (user) { // Check if user object is defined
 //     const getfriends = async () => {
 //       try {
-//         const friendlist = await axios.get("/api/users/friends/" + user._id);
+//         const friendlist = await axios.get("http://localhost:8800/api/users/friends/" + user._id);
 //         setFriends(friendlist.data);
 //       } catch (error) {
 //         console.log(error);
@@ -36,21 +34,24 @@
 // }, [user]);
 
 
-// const handleClick = async ()=>{
+// const handleClick = async () => {
 //   try {
-//     if(followed){
-//       await axios.put(`/api/users/${user._id}/unfollow`,{userId:currentUser._id,});
-//     dispatch({type:"UNFOLLOW",payload:user._id})
-    
-//     }else{
-//       await axios.put(`/api/users/${user._id}/follow`,{userId:currentUser._id});
-//       dispatch({type:"FOLLOW",payload:user._id});
+//     if (followed) {
+//       await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, {
+//         userId: currentUser._id,
+//       });
+//       dispatch({ type: "UNFOLLOW", payload: user._id });
+//     } else {
+//       await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
+//         userId: currentUser._id,
+//       });
+//       dispatch({ type: "FOLLOW", payload: user._id });
 //     }
-//   } catch (error) {
-//     console.log(error)
+//     setFollowed(!followed);
+//   } catch (err) {
 //   }
-//   setFollowed(!followed)
-// }
+// };
+
 
 //   const Homerightbar = () => {
 //     return (
@@ -145,6 +146,9 @@
 // export default Rightbar
 
 
+
+
+
 import "./rightbar.css";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -152,66 +156,42 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import Online from "../online/Online";
- import { Users } from "../../dummydatas";
+import Online from "../online/Online"; // Unused import
+import { Users } from "../../dummydatas"; // Unused import
+
 function Rightbar({ user }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
-  
   const [followed, setFollowed] = useState(false);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
 
   useEffect(() => {
     const getFriends = async () => {
       try {
-        if (user && user._id) {// Check if user object is defined
-          const friendlist = await axios.get(`/api/users/friends/${user._id}`);
-          console.log(friendlist)
+        if (user && user._id) {
+         
+           const friendlist = await axios.get(`http://localhost:8800/api/users/friends/${user._id}`);
           setFriends(friendlist.data);
-          
         }
       } catch (error) {
         console.log(error);
       }
     };
 
-    if (currentUser && user) { // Check if currentUser and user objects are defined
+    if (currentUser && user) {
       getFriends();
-      // setFollowed(currentUser.followings && currentUser.followings.includes(user._id));
-      setFollowed(currentUser.followings?.includes(user._id)); // Use optional chaining
+      setFollowed(currentUser.followings?.includes(user._id));
     }
   }, [user, currentUser]);
 
-  
-
-  
-
-
-  // const handleClick = async () => {
-  //   try {
-  //     if (followed && user) { // Check if followed and user objects are defined
-  //       await axios.put(`/api/users/${user._id}/unfollow`, { userId: currentUser._id });
-  //       dispatch({ type: "UNFOLLOW", payload: user._id });
-  //     } else if (user) {
-  //       await axios.put(`/api/users/${user._id}/follow`, { userId: currentUser._id });
-  //       dispatch({ type: "FOLLOW", payload: user._id });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setFollowed(!followed);
-  // };
-
   const handleClick = async () => {
     try {
-      // Check if user and user._id are defined
       if (user && user._id) {
         if (followed) {
-          await axios.put(`/api/users/${user._id}/unfollow`, { userId: currentUser._id });
+          await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, { userId: currentUser._id });
           dispatch({ type: "UNFOLLOW", payload: user._id });
         } else {
-          await axios.put(`/api/users/${user._id}/follow`, { userId: currentUser._id });
+          await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, { userId: currentUser._id });
           dispatch({ type: "FOLLOW", payload: user._id });
         }
       }
@@ -221,15 +201,13 @@ function Rightbar({ user }) {
     setFollowed(!followed);
   };
 
-
-
   const HomeRightbar = () => {
     return (
       <>
         <div className="birthdayContainer">
-        <img className="birthdayimg" src="/assets/prson/gift.avif" alt="" />
+          <img className="birthdayimg" src="/assets/prson/gift.avif" alt="" />
           <span className="birthdayText">
-            <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
+            <b>Pola Foster</b> and <b>3 other friends</b> have a birthday today.
           </span>
         </div>
         <img className="rightbarad" src="/assets/prson/addimage1.webp" alt="" />
@@ -250,7 +228,6 @@ function Rightbar({ user }) {
           <button className="rightbarFollowButton" onClick={handleClick}>
             {followed ? "Unfollow" : "Follow"}
             {followed ? <CloseIcon /> : <AddIcon />}
-
           </button>
         )}
         <h4 className="rightbarTitle">User information</h4>
@@ -266,11 +243,7 @@ function Rightbar({ user }) {
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Relationship:</span>
             <span className="rightbarInfoValue">
-              {user.relationship === 1
-                ? "Single"
-                : user.relationship === 1
-                ? "Married"
-                : "-"}
+              {user.relationship === 1 ? "Single" : user.relationship === 2 ? "Married" : "-"}
             </span>
           </div>
         </div>
@@ -280,14 +253,11 @@ function Rightbar({ user }) {
             <Link
               to={"/profile/" + friend.username}
               style={{ textDecoration: "none" }}
+              key={friend._id}
             >
               <div className="rightbarFollowing">
                 <img
-                  src={
-                    friend.profilePicture
-                      ? PF + friend.profilePicture
-                      : PF + "prson/profile5.png"
-                  }
+                  src={friend.profilePicture ? PF + friend.profilePicture : PF + "prson/profile5.png"}
                   alt=""
                   className="rightbarFollowingImg"
                 />
@@ -299,6 +269,7 @@ function Rightbar({ user }) {
       </>
     );
   };
+
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
@@ -307,4 +278,5 @@ function Rightbar({ user }) {
     </div>
   );
 }
-export default Rightbar
+
+export default Rightbar;
