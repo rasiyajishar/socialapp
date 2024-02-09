@@ -31,7 +31,12 @@ mongoose.connection.on("error", (error) => {
 
 
 
-app.use("/images",express.static(path.join(__dirname,"public/images")));
+// Middleware
+app.use("/images", express.static(path.join(__dirname, "public/images"), {
+    setHeaders: (res, path, stat) => {
+        res.set('Cross-Origin-Resource-Policy', 'same-origin');
+    }
+}));
 
 // Middleware
 
