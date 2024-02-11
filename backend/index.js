@@ -10,6 +10,8 @@ const authRouter = require("./routes/auth")
 const postsRouter = require("./routes/posts")
 const multer = require("multer")
 const path = require("path")
+const passport=require("passport")
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 dotenv.config();
 
 // Connect to MongoDB
@@ -31,6 +33,9 @@ mongoose.connection.on("error", (error) => {
 
 
 
+// Passport middleware
+app.use(passport.initialize());
+
 // Middleware
 app.use("/images", express.static(path.join(__dirname, "public/images"), {
     setHeaders: (res, path, stat) => {
@@ -45,6 +50,37 @@ app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+
+
+
+// Passport config
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback"
+  }, async (accessToken, refreshToken, profile, done) => {
+    const newUser = {
+      googleId: profile.id,
+      displayName: profile.displayName,
+      email: profile.emails[0].value
+    };
+  
+    try {
+      let user = await User.findOne({ googleId: profile.id });
+  
+      if (user) {
+        done(null, user);
+      } else {
+        user = await User.create(newUser);
+        done(null, user);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }));
+  
+
+
 
 
 
@@ -94,6 +130,15 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postsRouter);
+
+
+// Routes googlelogin
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+  res.redirect('/');
+});
+
 
 
 // Start the server
