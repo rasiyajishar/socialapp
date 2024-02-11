@@ -1,11 +1,11 @@
-import { useContext, useRef } from "react"
+import { useContext,  useRef } from "react"
 import "./login.css"
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
+import GoogleLogin from 'react-google-login';
 
-
-
+import axios from "axios"
 
 function Login() {
     const email = useRef();
@@ -13,6 +13,19 @@ function Login() {
     const { user, isFetching, error, dispatch } = useContext(AuthContext)
 
     const navigate = useNavigate();
+   
+    const responseGoogle = async (response) => {
+        try {
+          const res = await axios.post('/auth/googleLogin', { tokenId: response.tokenId });
+          console.log(res.data);
+          // Handle successful login (e.g., store token in localStorage and redirect)
+        } catch (error) {
+          console.error('Google login error:', error);
+        }
+      };
+
+
+
 
     
 
@@ -49,8 +62,16 @@ function Login() {
                         <button className="loginbutton">{isFetching ? "loading" : "Log In"}</button>
                         <span className="loginForgot">Forgot Password</span>
                         <button className="loginregisterbutton" onClick={handlenewaccount}>Create a new Account</button>
-                       
+                      
                     </form>
+                   <div>  <GoogleLogin
+        clientId="YOUR_GOOGLE_CLIENT_ID"
+        buttonText="Login with Google"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+      /></div>
+                   
                 </div>
 
             </div>

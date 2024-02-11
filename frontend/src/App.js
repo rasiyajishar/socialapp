@@ -35,7 +35,7 @@
 
 
 // App.js
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Profile from './pages/profile/Profile';
@@ -45,6 +45,12 @@ import Register from './pages/register/Register';
 
 function App() {
   
+const[stateauth,setStateAuth]=useState()
+const response=(res)=>{
+  setStateAuth(res)
+}
+
+
 
   return (
     <Routes>
@@ -55,7 +61,7 @@ function App() {
       
       <Route
         path="/login"
-        element={<Login />}
+        element={<Login response={response}/>}
       />
       <Route
         path="/home"
