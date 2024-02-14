@@ -18,7 +18,7 @@ function Login() {
         try {
           const res = await axios.post('/auth/googleLogin', { tokenId: response.tokenId });
           console.log(res.data);
-          // Handle successful login (e.g., store token in localStorage and redirect)
+         
         } catch (error) {
           console.error('Google login error:', error);
         }
