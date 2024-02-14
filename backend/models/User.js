@@ -56,7 +56,26 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       enum: [1, 2, 3],
     },
+    comments: [
+      {
+        postId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Post',
+          required: true
+        },
+        text: {
+          type: String,
+          required: true
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ]
   },
+  
+
   { timestamps: true }
 );
 

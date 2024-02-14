@@ -2,7 +2,7 @@ const postsRouter = require("express").Router();
 
 const Post = require("../models/Post")
 const User =require("../models/User")
-
+const Comment = require("../models/Comment")
 
 //create a post
 postsRouter.post("/", async(req,res)=>{
@@ -132,6 +132,77 @@ postsRouter.get("/profile/:username",async(req,res)=>{
 //         res.status(500).json({ error: "Internal Server Error" });
 //     }
 // });
+
+
+
+
+// Create a comment on a post
+
+postsRouter.post("/:postId/comments", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const comment = new Comment({
+      postId: post._id, // Associate the comment with the post
+      text: req.body.text // Assuming the request body contains the comment text
+    });
+
+    await comment.save();
+
+    // Add the newly created comment to the post's comments array
+    post.comments.push(comment);
+    await post.save();
+
+    res.status(201).json({ message: "Comment created successfully", comment });
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Update a comment on a post
+postsRouter.put("/:postId/comments/:commentId", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    const commentIndex = post.comments.findIndex(
+      (comment) => comment._id.toString() === req.params.commentId
+    );
+    if (commentIndex === -1) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    Object.assign(post.comments[commentIndex], req.body); // Update comment data
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Error updating comment:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Delete a comment on a post
+postsRouter.delete("/:postId/comments/:commentId", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    post.comments = post.comments.filter(
+      (comment) => comment._id.toString() !== req.params.commentId
+    );
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 
 
 module.exports=postsRouter;
