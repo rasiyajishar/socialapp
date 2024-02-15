@@ -38,9 +38,9 @@ app.use(passport.initialize());
 
 // Middleware
 app.use("/images", express.static(path.join(__dirname, "public/images"), {
-    setHeaders: (res, path, stat) => {
-        res.set('Cross-Origin-Resource-Policy', 'same-origin');
-    }
+    // setHeaders: (res, path, stat) => {
+    //     res.set('Cross-Origin-Resource-Policy', 'same-origin');
+    // }
 }));
 
 // Middleware
@@ -84,34 +84,21 @@ passport.use(new GoogleStrategy({
 
 
 
-// const storage = multer.diskStorage({
-//     destination:(req,file,cb)=>{
-//      cb(null,"public/images")   
-//     },
-//     filename:(req,file,cb)=>{
-//         cb(null,req.body.name)
-//     },
-// })
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public/images");
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    }
+        // cb(null, Date.now() + "-" + file.originalname);
+    cb(null,req.body.name)
+      },
 });
 
 
 
  const upload = multer({storage:storage});
-// app.post("/api/upload",upload.single("file"),(req ,res)=>{
-//     try {
-//      return res.status(200).json("file uploaded suscessfully")  
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
+
 
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
