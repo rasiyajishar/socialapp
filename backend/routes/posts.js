@@ -137,22 +137,32 @@ postsRouter.get("/profile/:username",async(req,res)=>{
 
 
 // Create a comment on a post
-
 postsRouter.post("/:postId/comments", async (req, res) => {
   try {
+    console.log("Request Body:", req.body);
     const post = await Post.findById(req.params.postId);
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    const { userId, text } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!text) {
+      return res.status(400).json({ message: "Comment text is required" });
+    }
+
     const comment = new Comment({
-      postId: post._id, // Associate the comment with the post
-      text: req.body.text // Assuming the request body contains the comment text
+      postId: post._id,
+      userId: userId,
+      text: text
     });
 
     await comment.save();
 
-    // Add the newly created comment to the post's comments array
     post.comments.push(comment);
     await post.save();
 
@@ -162,9 +172,13 @@ postsRouter.post("/:postId/comments", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+
 // Update a comment on a post
 postsRouter.put("/:postId/comments/:commentId", async (req, res) => {
   try {
+
+    console.log("Request Body:", req.body); // Log the request body
     const post = await Post.findById(req.params.postId);
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
@@ -202,6 +216,24 @@ postsRouter.delete("/:postId/comments/:commentId", async (req, res) => {
   }
 });
 
+
+
+
+
+// Fetch comments for a specific post
+postsRouter.get("/:postId/comments", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId).populate("comments");
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(post.comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 
 
