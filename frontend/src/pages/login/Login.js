@@ -41,7 +41,7 @@ function Login() {
 
     
     const handlenewaccount=()=>{
-        navigate("/register")
+        navigate("/")
     }
     
 

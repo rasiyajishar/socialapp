@@ -9,8 +9,16 @@ import axios from "axios"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../../context/AuthContext";
 import Comment from "../comment/Comment"; 
-function Post({ post,comments }) {
 
+
+
+
+
+
+
+
+function Post({ post,comments = [] }) {
+  
   // const user = Users.filter(u=>u.id===1)
   // console.log(user[0].username)
   const [like, setLike] = useState(post.likes.length)
@@ -90,7 +98,7 @@ try{
 
           </div>
           <div className="postbottomright">
-            <span className="postcommenttext">{comments} comments</span>
+          <span className="postcommenttext">{comments.length} comments</span>
           </div>
           
           
