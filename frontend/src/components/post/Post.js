@@ -8,9 +8,8 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../../context/AuthContext";
-
-
-function Post({ post }) {
+import Comment from "../comment/Comment"; 
+function Post({ post,comments }) {
 
   // const user = Users.filter(u=>u.id===1)
   // console.log(user[0].username)
@@ -21,10 +20,13 @@ const[user,setUser]=useState({})
 const {user:currentUser}=useContext(AuthContext)
 
 
+
 useEffect(()=>{
   setIsLiked(post.likes.includes(currentUser._id))
 },[currentUser._id, post.likes])
 
+
+  
 
 
 
@@ -88,8 +90,10 @@ try{
 
           </div>
           <div className="postbottomright">
-            <span className="postcommenttext">{post.comment} comments</span>
+            <span className="postcommenttext">{comments} comments</span>
           </div>
+          
+          
 
         </div>
 
