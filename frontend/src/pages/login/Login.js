@@ -3,7 +3,7 @@ import "./login.css"
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 
 import axios from "axios"
 
@@ -15,13 +15,13 @@ function Login() {
     const navigate = useNavigate();
    
     const responseGoogle = async (response) => {
-        try {
-          const res = await axios.post('/auth/googleLogin', { tokenId: response.tokenId });
+      try {
+          const res = await axios.post('http://localhost:8800/auth/googleLogin', { tokenId: response.tokenId });
           console.log(res.data);
-         
-        } catch (error) {
+          // Handle user authentication or redirection
+      } catch (error) {
           console.error('Google login error:', error);
-        }
+      }
       };
 
 
@@ -64,14 +64,25 @@ function Login() {
                         <button className="loginregisterbutton" onClick={handlenewaccount}>Create a new Account</button>
                       
                     </form>
-                   <div>  <GoogleLogin
-        clientId="YOUR_GOOGLE_CLIENT_ID"
-        buttonText="Login with Google"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
-      /></div>
                    
+                    {/* <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>; */}
+
+<GoogleLogin
+                onSuccess={responseGoogle}
+                onError={() => {
+                    console.log('Login Failed');
+                }}
+            />
+
+
+
                 </div>
 
             </div>

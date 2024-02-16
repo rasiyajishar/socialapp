@@ -39,12 +39,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
-        <App />
+      <GoogleOAuthProvider clientId="639625706529-9c537kq0bvj95eljiel5a54gb2blc9ai.apps.googleusercontent.com"><App /></GoogleOAuthProvider>
+       
       </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
