@@ -5,6 +5,8 @@ const User = require("../models/User");
 
 
 
+
+
 //update user
 userRouter.put("/:id", async (req, res) => {
     if (req.body.userId === req.params.id || req.body.isAdmin) {
@@ -132,6 +134,8 @@ userRouter.put("/:id/unfollow",async(req,res)=>{
         res.status(403).json("you cant unfollow yourself");
       }
     });
+
+
 
 
 

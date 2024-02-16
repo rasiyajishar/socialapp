@@ -3,11 +3,12 @@ const authRouter = express.Router(); // Create a new router instance
 const User = require("../models/User");
 const bcrypt = require("bcrypt")
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 //register
 authRouter.post("/register", async(req, res) => {
   
-
-
   try {
 //generate new password
     const salt = await bcrypt.genSalt(10);
@@ -48,6 +49,42 @@ authRouter.post("/login", async (req, res) => {
     return res.status(500).json(err);
   }
 });
+
+
+
+// Handle Google login
+authRouter.post("/auth/googleLogin", async (req, res) => {
+  const { tokenId } = req.body;
+  try {
+      const ticket = await client.verifyIdToken({
+          idToken: tokenId,
+          audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      const { email } = payload;
+
+      // Check if the user already exists in the database
+      let user = await User.findOne({ email });
+
+      if (!user) {
+          // Create a new user if not found
+          user = new User({
+              email,
+              // Add any other user fields as needed
+          });
+          await user.save();
+      }
+
+      
+      // Respond with user data or token
+      res.status(200).json({ user });
+  } catch (error) {
+      console.error("Google login error:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 
 
 module.exports = authRouter;
