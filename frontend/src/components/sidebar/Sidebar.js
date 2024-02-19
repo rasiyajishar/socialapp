@@ -6,12 +6,32 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import EventIcon from '@mui/icons-material/Event';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import WorkIcon from '@mui/icons-material/Work';
-import {Users} from "../../dummydatas"
+
 import Closefriends from '../closefriends/Closefriends';
 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
+function Sidebar({ userId }) {
+    const [friends, setFriends] = useState([]);
+    useEffect(() => {
+        const fetchFriends = async () => {
+            try {
+                console.log("User ID:", userId); // Check if userId is passed correctly
+                if (userId) {
+                    const response = await axios.get(`http://localhost:8800/api/users/friends/${userId}`);
+                    console.log("Friends Response:", response.data); // Check the response from the API
+                    setFriends(response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching friends:", error); // Log any errors
+            }
+        };
+    
+        fetchFriends();
+    }, [userId]);
+    
 
-function Sidebar() {
     return (
         <div className="sidebar">
             <div className='sidebarwrapper'>
@@ -50,9 +70,8 @@ function Sidebar() {
                 <hr className='sidebarhr'/>
            <ul className='sidebarfriendlist'>
 
-{Users.map((u)=>(
-    <Closefriends key={u.id} user={u}/>
-))}
+
+           <Closefriends friends={friends} />
 
 
 

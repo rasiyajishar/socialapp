@@ -15,14 +15,16 @@ function Login() {
     const navigate = useNavigate();
    
     const responseGoogle = async (response) => {
-      try {
-          const res = await axios.post('http://localhost:8800/auth/googleLogin', { tokenId: response.tokenId });
-          console.log(res.data);
-          // Handle user authentication or redirection
-      } catch (error) {
-          console.error('Google login error:', error);
-      }
-      };
+        try {
+            const tokenId = response.credential;
+            const res = await axios.post('http://localhost:8800/api/auth/googleLogin', { tokenId });
+            console.log(res.data);
+            navigate("/home");
+        } catch (error) {
+            console.error('Google login error:', error);
+        }
+    };
+    
 
 
 
@@ -64,15 +66,15 @@ function Login() {
                         <button className="loginregisterbutton" onClick={handlenewaccount}>Create a new Account</button>
                       
                     </form>
-                   
-                    {/* <GoogleLogin
+{/*                    
+                     <GoogleLogin
   onSuccess={credentialResponse => {
     console.log(credentialResponse);
   }}
   onError={() => {
     console.log('Login Failed');
   }}
-/>; */}
+/> */}
 
 <GoogleLogin
                 onSuccess={responseGoogle}
