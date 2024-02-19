@@ -1,10 +1,9 @@
 const express = require("express");
-const authRouter = express.Router(); // Create a new router instance
+const authRouter = express.Router(); 
 const User = require("../models/User");
 const bcrypt = require("bcrypt")
-
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const {OAuth2Client}=require('google-auth-library')
+const client=new OAuth2Client("639625706529-9c537kq0bvj95eljiel5a54gb2blc9ai.apps.googleusercontent.com")
 
 //register
 authRouter.post("/register", async(req, res) => {
@@ -27,7 +26,7 @@ authRouter.post("/register", async(req, res) => {
     res.status(201).json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Could not register user" }); // Sending 500 status for server error
+    res.status(500).json({ error: "Could not register user" }); 
   }
 });
 
@@ -52,38 +51,27 @@ authRouter.post("/login", async (req, res) => {
 
 
 
-// Handle Google login
-authRouter.post("/auth/googleLogin", async (req, res) => {
+
+// Google Login
+authRouter.post("/googleLogin", async (req, res) => {
   const { tokenId } = req.body;
+  console.log("Received tokenId:", tokenId); // Log tokenId for debugging
+
   try {
-      const ticket = await client.verifyIdToken({
+      const response = await client.verifyIdToken({
           idToken: tokenId,
-          audience: process.env.GOOGLE_CLIENT_ID,
+          audience: "639625706529-9c537kq0bvj95eljiel5a54gb2blc9ai.apps.googleusercontent.com"
       });
-      const payload = ticket.getPayload();
-      const { email } = payload;
 
-      // Check if the user already exists in the database
-      let user = await User.findOne({ email });
+      const { email_verified, name, email } = response.payload;
+      console.log("Google login successful:", response.payload); // Log Google OAuth response payload
 
-      if (!user) {
-          // Create a new user if not found
-          user = new User({
-              email,
-              // Add any other user fields as needed
-          });
-          await user.save();
-      }
-
-      
-      // Respond with user data or token
-      res.status(200).json({ user });
-  } catch (error) {
-      console.error("Google login error:", error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(200).json({ email_verified, name, email });
+  } catch (err) {
+      console.error("Google login error:", err);
+      res.status(500).json({ error: "Google login failed" });
   }
 });
-
 
 
 
